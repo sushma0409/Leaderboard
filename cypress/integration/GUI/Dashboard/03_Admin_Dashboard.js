@@ -1,0 +1,57 @@
+///<reference types = 'cypress'/>
+import Dashboard from '../Utility/Dashboard'
+import Menu from '../PageObject/DashboardPage'
+describe('Dashboard Feature for Admin',function(){
+    it('LB-32 : As Admin, User should be able to view his own dashboard page',function(){
+        const page = new Dashboard()
+        page.Admin()
+        cy.get("span[class='fs-4']").should('contain','Welcome')    
+        cy.title().should('eq','Knoldus Leaderboard')
+        cy.get('span[class="nav-link-text ms-1"]').contains('Dashboard') 
+    })
+    it('LB-34 : As Admin, User should be able to view the "Organization Dashboard"',function(){
+        const page = new Dashboard()
+        page.Admin()
+        cy.get("span[class='fs-4']").should('contain','Welcome')    
+        cy.title().should('eq','Knoldus Leaderboard')
+        cy.get('span[class="nav-link-text ms-1"]').contains('Dashboard') 
+        const board = new Menu()
+        board.BoardDropdown()
+        board.Summary()
+    })
+    it('LB-37 : Admin should able to view contribution history',function(){
+        const page = new Dashboard()
+        page.Admin()
+        cy.get("span[class='fs-4']").should('contain','Welcome')    
+        cy.title().should('eq','Knoldus Leaderboard')
+        cy.get('span[class="nav-link-text ms-1"]').contains('Dashboard') 
+        cy.get('i[class="material-icons text-white calender-icon opacity-10"]').should('contain','calendar_month')
+        cy.get('div[class="ms-3 d-flex align-items-center justify-content-center text-white"]').should('contain',' Last 12 Months Contributions ')
+    })
+    it('LB-43 : Admin should able to view his overall score, rank and reward points',function(){
+        const page = new Dashboard()
+        page.Admin()
+        cy.get("span[class='fs-4']").should('contain','Welcome')    
+        cy.title().should('eq','Knoldus Leaderboard')
+        cy.get('span[class="nav-link-text ms-1"]').contains('Dashboard') 
+        cy.get('div[class="text-secondary mt-n3"]').should('have.text','ScoreRankPoints')
+    })
+    it('LB-73 : As Admin, user should be able to view the Days since the last contribution',function(){
+        const page = new Dashboard()
+        page.Admin()
+        cy.get("span[class='fs-4']").should('contain','Welcome')    
+        cy.title().should('eq','Knoldus Leaderboard')
+        cy.get('span[class="nav-link-text ms-1"]').contains('Dashboard') 
+        cy.get('div[class="text-white"]').should('contain','Last Contribution')
+        cy.get('div[class="icon-size text-white"]').should('contain',' Days Ago ')
+    })
+    it('LB-41 : Admin should able to view piechart of his overall contribution',function(){
+        const page = new Dashboard()
+        page.Admin()
+        cy.get("span[class='fs-4']").should('contain','Welcome')    
+        cy.title().should('eq','Knoldus Leaderboard')
+        cy.get('span[class="nav-link-text ms-1"]').contains('Dashboard') 
+        cy.scrollTo('bottom')
+        cy.get('div[class="card p-4"]').should('contain','Overall Contributions')
+    })
+})
