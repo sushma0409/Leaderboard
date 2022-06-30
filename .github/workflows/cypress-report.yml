@@ -1,26 +1,50 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Cypress GitHub Actions
-'on':
+name: Generate Cypress Report
+
+on:
   push:
-    branches:
-      - 'master'
+    branches: [ "main" ]
   pull_request:
-    branches:
-     - 'master'
+    branches: [ "main" ]
+
 jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install node
-        uses: actions/setup-node@v2
+ cypress-tests:
+   name: Run on Chrome 100
+   runs-on: ubuntu-18.04
+   container: cypress/browsers:node14.17.6-slim-chrome100-ff99-edge
+   steps:
+    
+    - uses: actions/checkout@v2
+     
+    - name: Install a project and verify
+ 
+      run: |
+        npm ci
+        $(npm bin)/cypress verify
+        
+        - name: Run Cypress tests
+          run: npm run test:chrome
+          continue-on-error: false
+          
+          
+        - name: Copy test execution videos and screenshots
+          run: |
+        mkdir public
+        cp -r cypress/videos public/videos
+        cp -r cypress/videos public/screenshots
+        
+        - name: Merge test results into one
+         run: npm run combine:report
+         
+        - name: Generate HTML report
+         run: npm run generate:report
+         
+        - name: Deploy report page
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          'node:version': '14'
-      - name: Install dependencies
-        working-directory: ./Leaderboard 
-        run: npm install --package-lock
-      - name: Cypress run
-        working-directory: ./Leaderboard
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        
+        
