@@ -19,7 +19,6 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-
 import './functions'
 import './commands'
 import addContext from 'mochawesome/addContext'
