@@ -25,6 +25,7 @@ jobs:
         - name: Run Cypress tests
           run: npm run test:chrome
           continue-on-error: true
+          run: npm install --package-lock
           
         - name: Copy test execution videos and screenshots
           run: |
