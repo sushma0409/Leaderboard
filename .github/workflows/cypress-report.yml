@@ -20,29 +20,27 @@ jobs:
     - name: Install a project with a clean slate
       run: |
         npm ci
-        $(npm bin)/cypress cache path
-        $(npm bin)/cypress cache list
         $(npm bin)/cypress verify
         
         - name: Run Cypress tests
           run: npm run test:chrome
           continue-on-error: true
           
-        - name: Copy test execution videos
+        - name: Copy test execution videos and screenshots
           run: |
         mkdir public
         cp -r cypress/videos public/videos
+        cp -r cypress/videos public/screenshots
         
         - name: Merge test results into one
-         run: npm run report:merge
+         run: npm run combine:report
          
         - name: Generate HTML report
-         run: npm run report:generate
+         run: npm run generate:report
          
         - name: Deploy report page
         uses: peaceiris/actions-gh-pages@v3
         with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./public
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
+        
