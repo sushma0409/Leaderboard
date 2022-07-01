@@ -6,4 +6,3 @@ It's a simple Cypress project which presents how you can set up GitHub Actions t
 
 Test execution result page can be accessed on: https://sushma0409.github.io/Leaderboard/
 
-Source code of HTML page is available on [gh-pages](https://github.com/wkrzywiec/cypress-simple-ci-report/tree/gh-pages) branch.
